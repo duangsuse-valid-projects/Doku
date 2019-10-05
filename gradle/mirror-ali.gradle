@@ -1,0 +1,11 @@
+repositories {
+  def ALI_URL = 'http://maven.aliyun.com/nexus/content/groups/public'
+  all { ArtifactRepository repo -> if (repo instanceof MavenArtifactRepository) {
+    def url = repo.url.toString()
+    if (url.startsWith('https://repo1.maven.org/maven2')
+      ||url.startsWith('https://jcenter.bintray.com')
+      ||url.startsWith('https://repo.maven.apache.org/maven2'))
+      { project.logger.lifecycle("Repository $url is shadowed by $ALI_URL"); remove(repo) }
+  } }
+  maven { url ALI_URL }
+}
